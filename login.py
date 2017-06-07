@@ -1,4 +1,4 @@
-from Tkinter import *
+from tkinter import *
 import os
  
 creds = 'tempfile.temp' # This just sets the variable creds to 'tempfile.temp'
@@ -40,33 +40,46 @@ def FSSignup():
 def Login():
     global nameEL
     global pwordEL # More globals :D
-    global rootA
+    global root
  
-    rootA = Tk() # This now makes a new window.
-    rootA.title('Login') # This makes the window title 'login'
+    root = Tk() # This now makes a new window.
+    w = 500
+    h = 300
+    # get screen width and height
+    ws = root.winfo_screenwidth() # width of the screen
+    hs = root.winfo_screenheight() # height of the screen
+
+    # calculate x and y coordinates for the Tk root window
+    x = (ws/2) - (w/2)
+    y = (hs/2) - (h/2)
+
+    # set the dimensions of the screen 
+    # and where it is placed
+    root.geometry('%dx%d+%d+%d' % (500, 300, x, y))
+    root.title('User Login') # This makes the window title 'login'
  
-    intruction = Label(rootA, text='Please Login\n') # More labels to tell us what they do
+    intruction = Label(root, text='Please Login\n') # More labels to tell us what they do
     intruction.grid(sticky=E) # Blahdy Blah
  
-    nameL = Label(rootA, text='Username: ') # More labels
-    pwordL = Label(rootA, text='Password: ') # ^
-    nameL.grid(row=1, sticky=W)
-    pwordL.grid(row=2, sticky=W)
+    nameL = Label(root, text='Username : ') # More labels
+    pwordL = Label(root, text='Password : ') # ^
+    nameL.grid(row=1, column=1,columnspan=1, padx=20, pady=20)
+    pwordL.grid(row=2, column=1,columnspan=1, padx=20, pady=20)
  
-    nameEL = Entry(rootA) # The entry input
-    pwordEL = Entry(rootA, show='*')
-    nameEL.grid(row=1, column=1)
-    pwordEL.grid(row=2, column=1)
+    nameEL = Entry(root) # The entry input
+    pwordEL = Entry(root, show='*')
+    nameEL.grid(row=1, column=2, columnspan=3, padx=10, pady=20)
+    pwordEL.grid(row=2, column=2, columnspan=3, padx=10, pady=20)
  
-    loginB = Button(rootA, text='Login', command=CheckLogin) # This makes the login button, which will go to the CheckLogin def.
-    loginB.grid(columnspan=2, sticky=W)
+    loginB = Button(root, text='Login', command=CheckLogin) # This makes the login button, which will go to the CheckLogin def.
+    loginB.grid(column=4)
  
-    rmuser = Button(rootA, text='Delete User', fg='red', command=DelUser) # This makes the deluser button. blah go to the deluser def.
-    rmuser.grid(columnspan=2, sticky=W)
-    rootA.mainloop()
+    root.mainloop()
  
 def CheckLogin():
-    with open(creds) as f:
+
+    #directly bypass to main window
+    '''with open(creds) as f:
         data = f.readlines() # This takes the entire document we put the info into and puts it into the data variable
         uname = data[0].rstrip() # Data[0], 0 is the first line, 1 is the second and so on.
         pword = data[1].rstrip() # Using .rstrip() will remove the \n (new line) word from before when we input it
@@ -84,14 +97,15 @@ def CheckLogin():
         r.geometry('150x50')
         rlbl = Label(r, text='\n[!] Invalid Login')
         rlbl.pack()
-        r.mainloop()
+        r.mainloop()'''
  
 def DelUser():
     os.remove(creds) # Removes the file
     rootA.destroy() # Destroys the login window
     Signup() # And goes back to the start!
  
-if os.path.isfile(creds):
+Login()
+'''if os.path.isfile(creds):
     Login()
 else: # This if else statement checks to see if the file exists. If it does it will go to Login, if not it will go to Signup :)
-    Signup()
+    Signup()'''
