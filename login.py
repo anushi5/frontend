@@ -43,6 +43,7 @@ def Login():
     global root
  
     root = Tk() # This now makes a new window.
+    
     w = 500
     h = 300
     # get screen width and height
@@ -57,24 +58,26 @@ def Login():
     # and where it is placed
     root.geometry('%dx%d+%d+%d' % (500, 300, x, y))
     root.title('User Login') # This makes the window title 'login'
- 
-    intruction = Label(root, text='Please Login\n') # More labels to tell us what they do
+    loginframe = Frame(root,height=w,width=h)
+    loginframe.pack()
+    loginframe.grid(padx=20, pady=20)
+    intruction = Label(loginframe, text='Please Login\n') # More labels to tell us what they do
     intruction.grid(sticky=E) # Blahdy Blah
  
-    nameL = Label(root, text='Username : ') # More labels
-    pwordL = Label(root, text='Password : ') # ^
-    nameL.grid(row=1, column=1,columnspan=1, padx=20, pady=20)
-    pwordL.grid(row=2, column=1,columnspan=1, padx=20, pady=20)
+    name = Label(loginframe, text='Username : ') # More labels
+    password = Label(loginframe, text='Password : ') # ^
+    name.grid(row=1, column=1,columnspan=1, padx=20, pady=20)
+    password.grid(row=2, column=1,columnspan=1, padx=20, pady=20)
  
-    nameEL = Entry(root) # The entry input
-    pwordEL = Entry(root, show='*')
-    nameEL.grid(row=1, column=2, columnspan=3, padx=10, pady=20)
-    pwordEL.grid(row=2, column=2, columnspan=3, padx=10, pady=20)
+    namevalue = Entry(loginframe) # The entry input
+    passwordvalue = Entry(loginframe, show='*')
+    namevalue.grid(row=1, column=2, columnspan=3, padx=10, pady=20)
+    passwordvalue.grid(row=2, column=2, columnspan=3, padx=10, pady=20)
  
-    loginB = Button(root, text='Login', command=CheckLogin) # This makes the login button, which will go to the CheckLogin def.
+    loginB = Button(loginframe, text='Login', command=lambda:CheckLogin(namevalue.get(),passwordvalue.get())) # This makes the login button, which will go to the CheckLogin def.
     loginB.grid(column=4)
  
-    root.mainloop()
+    loginframe.mainloop()
  
 def CheckLogin():
 
