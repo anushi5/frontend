@@ -175,35 +175,22 @@ def printhello():
 	print("Hellow world!")
 
 def convertfile(file,type):
-    switch(type):
-        case 0:
-            pdf2text(file)
-            break
-        case 1:
-            pdf2doc(file)
-            break
-        case 2:
-            text2doc(file)
-            break
-        case 3:
-            doc2text(file)
-            break
-        case 4:
-            image2text(file)
-            break
-        case 5:
-            text2image(file)
-            break
-        case 6:
-            image2doc(file)
-            break
-        case 7:
-            doc2image(file)
-            break
-        case 8:
-            image2pdf(file)
-            break
-        #wrong parameter
-        default:
-            return 0
-
+    if file==1:
+        pdf2text(file)
+    elif file==2:
+        pdf2doc(file)
+    elif file==3:
+        text2doc(file)
+    elif file==4:
+        doc2text(file)
+    elif file==5:
+        image2text(file)
+    elif file==6:
+        text2image(file)
+    elif file==7:
+        image2doc(file)
+    elif file==8:
+        doc2image(file)
+    elif file==9:
+        image2pdf(file)
+    
