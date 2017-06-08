@@ -174,23 +174,24 @@ def doc2image(file):
 def printhello():
 	print("Hellow world!")
 
-def convertfile(file,type):
-    if file==1:
+def convertfile(file,qurytype):
+    print(querytype)
+    if querytype=="PDF to Text":
         pdf2text(file)
-    elif file==2:
+    elif querytype=="PDF to Doc":
         pdf2doc(file)
-    elif file==3:
+    elif querytype=="Text to Doc":
         text2doc(file)
-    elif file==4:
+    elif querytype=="Doc to Text":
         doc2text(file)
-    elif file==5:
+    elif querytype=="Image to Text":
         image2text(file)
-    elif file==6:
+    elif querytype=="Text to Image":
         text2image(file)
-    elif file==7:
+    elif querytype=="Image to Doc":
         image2doc(file)
-    elif file==8:
+    elif querytype=="Doc to Image":
         doc2image(file)
-    elif file==9:
+    elif querytype=="Image to PDF":
         image2pdf(file)
     

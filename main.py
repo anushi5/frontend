@@ -86,7 +86,7 @@ class HomePage(tk.Frame):
       browse = tk.Button(self, text='Browse', command=self.browsefile)
       browse.grid(row=2,column=1,padx=20,pady=20)
       
-      submitbtn = tk.Button(self, text="Submit",command=lambda: printhello)
+      submitbtn = tk.Button(self, text="Submit",command=lambda: convertfile(self.filename,dropVar.get()))
       submitbtn.grid(row=2, column=2,padx=20,pady=20)
 
     def browsefile(self):
