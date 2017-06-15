@@ -2,11 +2,11 @@ from docx import Document
 from docx.shared import Inches
 import PIL
 import PIL.Image
-from pdfminer.pdfinterp import PDFResourceManager, PDFPageInterpreter
-from pdfminer.converter import TextConverter
-from pdfminer.layout import LAParams
-from pdfminer.pdfpage import PDFPage
-from cStringIO import StringIO
+'''from pdfminer3k.pdfinterp import PDFResourceManager, PDFPageInterpreter
+from pdfminer3k.converter import TextConverter
+from pdfminer3k.layout import LAParams
+from pdfminer3k.pdfpage import PDFPage
+from cStringIO import StringIO'''
 from docx import Document
 import re
 import os
@@ -15,21 +15,23 @@ import pytesseract
 from PIL import Image, ImageFont, ImageOps, ImageDraw, ImageEnhance, ImageFilter
 
 
-def ImagetoDoc(filename):
+def image2doc(filename,outputfile):
     document = Document()
-    name = raw_input('Enter name of the file which will save after conversion: ')+'.docx'
+    #name = raw_input('Enter name of the file which will save after conversion: ')+'.docx'
     p = document.add_paragraph()
     r = p.add_run()
     r.add_picture(filename, width = Inches(6.0))
-    document.save(name)
-def ImagetoPDF(filename):
-    name = raw_input('Enter name of the file which will save after conversion: ')+'.pdf'
+    document.save("output/"+outputfile+".docx")
+
+def image2pdf(filename,outputfile):
+    #name = raw_input('Enter name of the file which will save after conversion: ')+'.pdf'
     im = PIL.Image.open(filename)
     newfilename = name
-    PIL.Image.Image.save(im, newfilename, "PDF", resolution = 100.0)
-def PDFtoDoc(filename):
+    PIL.Image.Image.save(im, "output/"+outputfile+".pdf", "PDF", resolution = 100.0)
+
+def pdf2doc(filename,outputfile):
     document = Document()
-    name = raw_input('Enter name of the file which will save after conversion: ')+'.docx'
+    #name = raw_input('Enter name of the file which will save after conversion: ')+'.docx'
     rsrcmgr = PDFResourceManager()
     retstr = StringIO()
     codec = 'utf-8'
@@ -54,11 +56,12 @@ def PDFtoDoc(filename):
     p = document.add_paragraph()
     r = p.add_run()
     r.add_picture('q.jpg', width = Inches(6.0))
-    document.save(name)
+    document.save("output/"+outputfile+".docx")
     fp.close()
     device.close()
     retstr.close()
-def PDFToText(filename):
+
+def pdf2text(filename,outputfile):
     document = Document()
     fp = file(filename, 'rb')
     rsrcmgr = PDFResourceManager()
@@ -73,15 +76,16 @@ def PDFToText(filename):
     for page in PDFPage.get_pages(fp):
         interpreter.process_page(page)
         data =  retstr.getvalue()
-    name = raw_input('Enter name of the file which will save after conversion: ')+'.txt'  # Name of text file coerced with +.txt
-    fi = open(name,'a')
+    #name = raw_input('Enter name of the file which will save after conversion: ')+'.txt'  # Name of text file coerced with +.txt
+    fi = open("output/"+outputfile+".txt",'a')
     fi.write(data)
     fi.close()
-def DocToText(filename):
+
+def doc2text(filename,outputfile):
     document=Document(filename)
     filename=filename.strip('.docx') #not able to remove .docx
-    name = raw_input('Enter name of the file which will save after conversion: ')+'.txt'  # Name of text file coerced with +.txt
-    fi = open(name,'a')
+    #name = raw_input('Enter name of the file which will save after conversion: ')+'.txt'  # Name of text file coerced with +.txt
+    fi = open("output/"+outputfile+".txt",'a')
     f=open(filename+".txt","wb")
     for para in document.paragraphs:
         f.write(para.text)
@@ -89,16 +93,17 @@ def DocToText(filename):
     f = para.text
     fi.write(f)
     fi.close()
-def TextToDoc(filename):
+
+def text2doc(filename,outputfile):
     document = Document()
     myfile = open(filename).read()
     myfile = re.sub(r'[^\x00-\x7F]+|\x0c',' ', myfile) # remove all non-XML-compatible characters
     p = document.add_paragraph(myfile)
     name = raw_input('Enter name of the file which will save after conversion: ')+'.docx'
-    document.save(name)
+    document.save("output/"+outputfile+".docx")
 
 # Image file to text file conversion using Pytesseract module using Tesseract-OCR
-def image2text(file):
+def image2text(file,outputfile):
     image = Image.open(file) # the second one
     '''im = im.filter(ImageFilter.MedianFilter())
     enhancer = ImageEnhance.Contrast(im)
@@ -106,11 +111,11 @@ def image2text(file):
     im = im.convert('1')
     im.save('sample/temp.jpg')'''
     text = pytesseract.image_to_string(image,lang='eng').encode('cp850','replace').decode('cp850')
-    textfile = open("output/output.txt","w")
+    textfile = open("output/"+outputfile+".txt","w")
     textfile.write(text)
 
     # Text file to image file conversion
-def text2image(text_path, font_path=None):
+def text2image(text_path, outputfile, font_path=None):
     """Convert text file to a grayscale image with black characters on a white background.
 
     arguments:
@@ -154,14 +159,14 @@ def text2image(text_path, font_path=None):
     # crop the text
     c_box = PIL.ImageOps.invert(image).getbbox()
     image = image.crop(c_box)
-    image.save('output/result.jpg')
+    image.save("output/"+outputfile+".jpg")
 
 #doc file to image file conversion using doc2text + text2image file conversion
-def doc2image(file):
+def doc2image(file,outputfile):
     document=Document(filename)
     filename=filename.strip('.docx') #not able to remove .docx
-    name = raw_input('Enter name of the file which will save after conversion: ')+'.txt'  # Name of text file coerced with +.txt
-    fi = open(name,'a')
+    #name = raw_input('Enter name of the file which will save after conversion: ')+'.txt'  # Name of text file coerced with +.txt
+    fi = open("output/"+outputfile+".txt",'a')
     f=open(filename+".txt","wb")
     for para in document.paragraphs:
         f.write(para.text)
@@ -169,29 +174,27 @@ def doc2image(file):
     f = para.text
     fi.write(f)
     fi.close()
-    text2image(fi+".txt")
+    text2image(fi,outputfile)
 
-def printhello():
-	print("Hellow world!")
-
-def convertfile(file,qurytype):
-    print(querytype)
+def convertfile(inputfile,querytype,outputfile):
+    if not os.path.exists("output"):
+        os.makedirs("output")
     if querytype=="PDF to Text":
-        pdf2text(file)
+        pdf2text(inputfile,outputfile)
     elif querytype=="PDF to Doc":
-        pdf2doc(file)
+        pdf2doc(inputfile,outputfile)
     elif querytype=="Text to Doc":
-        text2doc(file)
+        text2doc(inputfile,outputfile)
     elif querytype=="Doc to Text":
-        doc2text(file)
+        doc2text(inputfile,outputfile)
     elif querytype=="Image to Text":
-        image2text(file)
+        image2text(inputfile,outputfile)
     elif querytype=="Text to Image":
-        text2image(file)
+        text2image(inputfile,outputfile)
     elif querytype=="Image to Doc":
-        image2doc(file)
+        image2doc(inputfile,outputfile)
     elif querytype=="Doc to Image":
-        doc2image(file)
+        doc2image(inputfile,outputfile)
     elif querytype=="Image to PDF":
-        image2pdf(file)
+        image2pdf(inputfile,outputfile)
     
